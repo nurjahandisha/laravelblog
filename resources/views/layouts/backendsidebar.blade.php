@@ -9,13 +9,26 @@
                         </a>
                         
                     </li>
+
+                    
+                    <li>
+                        <a href="{{route('role.add')}}" class="side-menu {{request()->routeIs('roll.*') ? 'side-menu--active side-menu--open': ''}}">
+                            <div class="side-menu__icon"> <i data-feather="home"></i> </div>
+                            <div class="side-menu__title">
+                                Roll Management
+                                
+                            </div>
+                        </a>
+                        
+                    </li>
                     
                 </ul>
                 <li>
                         <a href="javascript:;" class="side-menu {{request()->routeIs('category.*') ? 'side-menu--active side-menu--open': ''}}">
                             <div class="side-menu__icon"> <i data-feather="folder"></i> </div>
                             <div class="side-menu__title">
-                                category {{ request()->routeIs('category.*') ? 'done' : 'no'}}
+                                Category
+                                <!-- category {{ request()->routeIs('category.*') ? 'done' : 'no'}} -->
                                 <div class="side-menu__sub-icon"> <i data-feather="chevron-down"></i> </div>
                             </div>
                         </a>
@@ -54,7 +67,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{route('category.sub.add')}}" class="side-menu side-menu--active side-menu--open">
+                                <a href="{{route('post.allpost')}}" class="side-menu side-menu--active side-menu--open">
                                     <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
                                     <div class="side-menu__title">View All Post</div>
                                 </a>

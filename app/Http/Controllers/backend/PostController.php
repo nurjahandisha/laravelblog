@@ -20,11 +20,11 @@ class PostController extends Controller
 
     public function storepost(Request $request){
 
-        // $ext = $request->featured->extension();
-        // $filename = $this->slugenerator($request->title).'.'.$ext;
-        // $request->featured->storeAs('uploads/',$filename,'public');
-        // dd($request->all());
-        // @exit();
+        $ext = $request->featured->extension();
+        $filename = $this->slugenerator($request->title).'.'.$ext;
+       $image = $request->featured->storeAs('uploads/',$filename,'public');
+        // dd($image);
+        
         
         $post = new Post();
         $post->user_id = auth()->user()->id ;
@@ -33,11 +33,28 @@ class PostController extends Controller
         $post->title =$request->title;
         $post->slug =$this->slugenerator($request->title);
         $post->type =$request->type;
-        $post->featured_image ='dummy.jpg';
+        $post->featured_image = $image;
         $post->content =$request->content;
+        $post->save();
+        return back();
 
-    // dd($request->all());
+    // dd($request->feat());
     }
+
+    public function allpost(){
+        $posts = post::where('user_id',auth()->user()->id)->get();
+        return view ('backend.post.allpost',compact('posts'));
+    }
+
+
+
+
+
+
+
+
+
+
 
     private function slugenerator($title,$slug = null){
 
@@ -51,7 +68,7 @@ class PostController extends Controller
         if ($count > 0){
             $newslug =  $newslug .'-'.'count++';
         }
-        // $return $newslug;
+        return $newslug;
     
 
 

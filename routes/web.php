@@ -1,15 +1,16 @@
 <?php
 
-use App\Http\Controllers\backend\CategoryController;
-use App\Http\Controllers\backend\DashboardController;
-use App\Http\Controllers\backend\PostController;
-use App\Http\Controllers\backend\SubcategoryController;
-use App\Http\Controllers\frontend\HomeController;
-use App\Http\Controllers\HomeController as ControllersHomeController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoleController;
 use Monolog\Processor\HostnameProcessor;
+use App\Http\Controllers\backend\PostController;
+use App\Http\Controllers\frontend\HomeController;
+use App\Http\Controllers\backend\CategoryController;
+use App\Http\Controllers\backend\DashboardController;
+use App\Http\Controllers\backend\SubcategoryController;
+use App\Http\Controllers\HomeController as ControllersHomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,7 @@ use Monolog\Processor\HostnameProcessor;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/',[HomeController::class,'index'] )->name('frontend.home');
+
 
 Auth::routes();
 
@@ -57,12 +58,21 @@ Route::post('/store',[SubcategoryController::class,'storesubcategory'])->name('s
 Route::prefix('/posts')->name('post.')->group(function(){
 Route::get('/add',[PostController::class,'addpost'])->name('add');
 Route::post('/store',[PostController::class,'storepost'])->name('store');
+Route::get('/allpost',[PostController::class,'allpost'])->name('allpost');
 
 
 
 });
 
 
+// ROll Management
+Route::prefix('/role')->name('role.')->group(function(){
+ Route::get('/add',[RoleController::class,'addrole'])->name('add');
+ Route::post('/store',[RoleController::class,'storerole'])->name('store');
+
+
+
+});
 
 
 

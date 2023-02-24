@@ -25,7 +25,7 @@
 <body>
 
 <!-- preloader -->
-<div id="preloader">
+<!-- <div id="preloader">
 	<div class="book">
 		<div class="inner">
 			<div class="left"></div>
@@ -53,7 +53,7 @@
 			<li></li>
 		</ul>
 	</div>
-</div>
+</div> -->
 
 <!-- site wrapper -->
 <div class="site-wrapper">
@@ -100,33 +100,36 @@
 							<div class="collapse navbar-collapse flex-grow-1">
 								<!-- menus -->
 								<ul class="navbar-nav">
-									<li class="nav-item dropdown active">
-										<a class="nav-link dropdown-toggle" href="index.html">Home</a>
-										<ul class="dropdown-menu">
-											<li><a class="dropdown-item" href="index.html">Magazine</a></li>
-											<li><a class="dropdown-item" href="personal.html">Personal</a></li>
-											<li><a class="dropdown-item" href="personal-alt.html">Personal Alt</a></li>
-											<li><a class="dropdown-item" href="minimal.html">Minimal</a></li>
-											<li><a class="dropdown-item" href="classic.html">Classic</a></li>
-										</ul>
+									<li class="nav-item  active">
+										<a class="nav-link " href="{{route('frontend.home')}}">Home</a>
+										
 									</li>
-									<li class="nav-item">
-										<a class="nav-link" href="category.html">Lifestyle</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" href="category.html">Inspiration</a>
-									</li>
+									@foreach($categories as $category )
 									<li class="nav-item dropdown">
-										<a class="nav-link dropdown-toggle" href="classic.html#">Pages</a>
+										<a class="nav-link dropdown-toggle" href="{{route('frontend.category',$category)}}">{{$category->title}}</a>
+                                          
+										@if(count($category->subcategories)>0)
 										<ul class="dropdown-menu">
-											<li><a class="dropdown-item" href="category.html">Category</a></li>
-											<li><a class="dropdown-item" href="blog-single.html">Blog Single</a></li>
-											<li><a class="dropdown-item" href="blog-single-alt.html">Blog Single Alt</a></li>
-											<li><a class="dropdown-item" href="about.html">About</a></li>
-											<li><a class="dropdown-item" href="contact.html">Contact</a></li>
+										@foreach($category->subcategories as $subcategory)
+										<li><a class="dropdown-iteam" href="{{route('frontend.subcategory',$subcategory)}}">{{$subcategory->title}}</a></li>
+										@endforeach
+
+
 										</ul>
-									</li>
-									<li class="nav-item dropdown">
+                                        @endif
+
+									
+										
+										
+									@endforeach
+							
+									
+										<li class="nav-item dropdown">
+											<a class="dropdown-item" href="contact.html">Contact</a>
+										</li>
+										
+								
+									<li class="nav-item dropown">
 										<a class="nav-link dropdown-toggle" href="{{route('login')}}">Login/Singup</a>
 										<ul class="dropdown-menu">
 											@auth
@@ -211,9 +214,33 @@
 		</div>
 		<!-- form -->
 		<form class="d-flex search-form">
-			<input class="form-control me-2" type="search" placeholder="Search and press enter ..." aria-label="Search">
-			<button class="btn btn-default btn-lg" type="submit"><i class="icon-magnifier"></i></button>
+			<input name="search" id="searchinput" class="form-control me-2" type="search" placeholder="Search and press enter ..." aria-label="Search">
+			<button class="btn btn-default btn-lg" type="submit">search</button>
 		</form>
+          
+		<!-- <ul style="list-style: none;margin-top: 20px" id="searchresultshow"> -->
+         
+		<!-- <ul style="list-style: none;margin-top: 20px" id="searchresultshow">
+			<li class="border-bottom py-3">
+				<a href="#">
+					<div class="row align-iteams-center">
+						<div class="col-lg-3">
+							<img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8&w=1000&q=80" alt="">
+						</div>
+						<div class="col-lg-8">
+							how are you
+						</div>
+					</div>
+				</a>
+			</li>
+		</ul> -->
+
+
+
+
+
+
+
 	</div>
 </div>
 
@@ -268,12 +295,55 @@
 </div>
 
 <!-- JAVA SCRIPTS -->
-<script src="{{asset('forntend/js/jquery.min.js')}}"></script>
+<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 <script src="{{asset('forntend/js/popper.min.js')}}"></script>
 <script src="{{asset('forntend/js/bootstrap.min.js')}}"></script>
 <script src="{{asset('forntend/js/slick.min.js')}}"></script>
 <script src="{{asset('forntend/js/jquery.sticky-sidebar.min.js')}}"></script>
 <script src="{{asset('forntend/js/custom.js')}}"></script>
+
+<script>
+
+    $('#searchinput').on('keyup',function(){
+
+        let value = $(this).val()
+        
+		$.ajax({
+			method:'GET',
+			url: "{{route('frontend.searchpost')}}",
+			data: {searchText:value},
+			success: function(data){
+               let results = JSON.perse(data)
+			   let posts = []
+			   results.forEach(result => {
+                let li =`	
+			<li class="border-bottom py-3">
+				<a href="#">
+					<div class="row align-iteams-center">
+						<div class="col-lg-3">
+							<img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8&w=1000&q=80" alt="">
+						</div>
+						<div class="col-lg-8">
+							how are you
+						</div>
+					</div>
+				</a>
+			</li>
+		</ul>`;
+
+		posts.push(li)
+			   });
+			   $('#searchresultshow').html(posts)
+			}
+
+		});
+
+
+
+
+})
+
+</script>
 
 </body>
 </html>
